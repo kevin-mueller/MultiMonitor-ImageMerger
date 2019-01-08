@@ -27,12 +27,18 @@ namespace MutliMonitorImageMerger
             this.finalImageFullPath = finalImageFullPath;
         }
 
-        public string MergeImagesAccordingToMonitors(Dictionary<string, Image> images)
+        public enum SCALEMODE
         {
-            return CreateBackgroundImage(images);
+            CENTERED,
+            STRETCHED
         }
 
-        private string CreateBackgroundImage(Dictionary<string, Image> imageFiles)
+        public string MergeImagesAccordingToMonitors(Dictionary<string, Image> images, SCALEMODE scaling)
+        {
+            return CreateBackgroundImage(images, scaling);
+        }
+
+        private string CreateBackgroundImage(Dictionary<string, Image> imageFiles, SCALEMODE scaling)
         {
             using (var virtualScreenBitmap = new Bitmap((int)SystemInformation.VirtualScreen.Width, (int)SystemInformation.VirtualScreen.Height))
             {
@@ -67,7 +73,18 @@ namespace MutliMonitorImageMerger
                         fromImage.FillRectangle(SystemBrushes.Desktop, 0, 0, monitorBitmap.Width, monitorBitmap.Height);
 
                         if (image != null)
-                            DrawImageCentered(fromImage, image, new Rectangle(0, 0, monitorBitmap.Width, monitorBitmap.Height));
+                        {
+                            switch (scaling)
+                            {
+                                case SCALEMODE.CENTERED:
+                                    DrawImageCentered(fromImage, image, new Rectangle(0, 0, monitorBitmap.Width, monitorBitmap.Height));
+                                    break;
+                                case SCALEMODE.STRETCHED:
+                                    DrawImageStretched(fromImage, image, new Rectangle(0, 0, monitorBitmap.Width, monitorBitmap.Height));
+                                    break;
+                            }
+                            
+                        }
 
                         Rectangle rectangle;
 
@@ -100,6 +117,11 @@ namespace MutliMonitorImageMerger
             SystemParametersInfo(SetDeskWallpaper, 0, filename, UpdateIniFile | SendWinIniChange);
         }
 
+
+        private static void DrawImageStretched(Graphics g, Image img, Rectangle monitorRec)
+        {
+            g.DrawImage(img, monitorRec);
+        }
 
         private static void DrawImageCentered(Graphics g, Image img, Rectangle monitorRect)
         {

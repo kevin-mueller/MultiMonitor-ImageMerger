@@ -1,5 +1,5 @@
 # MultiMonitor-ImageMerger
-This C# Class can merge multiple images into one, according to your monitors resolution and position. Tested with triple Monitor Set-Up. (1x FullHD, 1x 2k, 1x 4k)
+This C# Class can merge multiple images into one, according to your monitors resolution and position. Tested with triple Monitor Set-Up. (1x FullHD, 1x 2k, 1x 4k) Great for Multiple Wallpaper use.
 
 
 ## How To Use:
@@ -20,6 +20,8 @@ This C# Class can merge multiple images into one, according to your monitors res
    `Dictionary<string, Image> imagesWithMonitor = new Dictionary<string, Image>();`
    
    `images.Add(Screen.AllScreens[0].DeviceName, Image.FromFile("image.png"));`
+   
+   Repeat this step with (in theory) as many images you want.
 
 2. Create the object and call the method:
 

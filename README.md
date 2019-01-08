@@ -27,7 +27,7 @@ This C# Class can merge multiple images into one, according to your monitors res
 
    `Merger merger = new Merger(@"C:\Users\YourUser\Desktop\final.png");`
    
-   `string finalImage = merger.MergeImagesAccordingToMonitors(imagesWithMonitor);`
+   `string finalImage = merger.MergeImagesAccordingToMonitors(imagesWithMonitor, Merger.SCALEMODE.STRETCHED);`
 
 3. Additionally set it as a Wallpaper:
 

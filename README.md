@@ -10,7 +10,7 @@ This C# Class can merge multiple images into one, according to your monitors res
   
   
 2. After you created your List, you can create the `merger` object. In the constructor you enter the __Full Path__ of the final image, that will be generated.
-3. Call the Method `MergeImagesAccordingToMonitors` and pass your list as the attribute. It will return the path of the generated image.
+3. Call the Method `MergeImagesAccordingToMonitors` and pass your list as the attribute. The second attribute defines how the images get drawn on the monitors. (Centered, Streched) It will return the path of the generated image.
 4. Additionally you can set this Image as a Wallpaper using the `setWallpaperFromFile` method.
 
 
@@ -27,7 +27,7 @@ This C# Class can merge multiple images into one, according to your monitors res
 
    `Merger merger = new Merger(@"C:\Users\YourUser\Desktop\final.png");`
    
-   `string finalImage = merger.MergeImagesAccordingToMonitors(imagesWithMonitor);`
+   `string finalImage = merger.MergeImagesAccordingToMonitors(imagesWithMonitor, Merger.SCALEMODE.STRETCHED);`
 
 3. Additionally set it as a Wallpaper:
 

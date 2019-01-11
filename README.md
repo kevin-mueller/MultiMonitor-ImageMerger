@@ -5,10 +5,8 @@ This C# Class can merge multiple images into one, according to your monitors res
 ## How To Use:
 1. Create a Dictionary List with `string, Image` (Image is `System.Drawing.Image`)
 
-   - For the string parameter you enter the __Name__ of your monitor. (You can use  
-   ```c#
-   System.Windows.Forms.Screen.AllScreens[index].DeviceName
-   ```
+   - For the string parameter you enter the __Name__ of your monitor. (You can use
+   `System.Windows.Forms.Screen.AllScreens[index].DeviceName`
    
    - For the Image parameter you can use 
    ```c#

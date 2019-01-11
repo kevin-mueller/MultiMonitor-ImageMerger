@@ -28,7 +28,7 @@ This C# Class can merge multiple images into one, according to your monitors res
    images.Add(Screen.AllScreens[0].DeviceName, Image.FromFile("image.png"));
    ```
    
-   Repeat this step with (in theory) as many images you want.
+   You can add as many items to the list as you want.
 
 2. Create the object and call the method:
 

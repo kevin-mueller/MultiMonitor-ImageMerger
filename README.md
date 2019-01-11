@@ -9,9 +9,7 @@ This C# Class can merge multiple images into one, according to your monitors res
    `System.Windows.Forms.Screen.AllScreens[index].DeviceName`
    
    - For the Image parameter you can use 
-   ```c#
-   Image.FromFile("yourImage.png");
-   ```
+   `Image.FromFile("yourImage.png");`
   
   
 2. After you created your List, you can create the `merger` object. In the constructor you enter the __Full Path__ of the final image, that will be generated.

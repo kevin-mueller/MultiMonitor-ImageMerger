@@ -30,7 +30,9 @@ namespace MutliMonitorImageMerger
         public enum SCALEMODE
         {
             CENTERED,
-            STRETCHED
+            STRETCHED,
+            OVERSCALED,
+            OVERSCALEDANDCENTERED
         }
 
         public string MergeImagesAccordingToMonitors(Dictionary<string, Image> images, SCALEMODE scaling)
@@ -62,8 +64,6 @@ namespace MutliMonitorImageMerger
 
                     foreach (var screen in screens)
                     {
-
-
                         var image = (imageFiles.ContainsKey(screen.DeviceName)) ? imageFiles[screen.DeviceName] : null;
 
                         var monitorDimensions = screen.Bounds;
@@ -72,7 +72,7 @@ namespace MutliMonitorImageMerger
                         var fromImage = Graphics.FromImage(monitorBitmap);
                         fromImage.FillRectangle(SystemBrushes.Desktop, 0, 0, monitorBitmap.Width, monitorBitmap.Height);
 
-                        if (image != null)
+                        if (image != null) //This Monitor has an Image -> Draw it as wished
                         {
                             switch (scaling)
                             {
@@ -82,31 +82,31 @@ namespace MutliMonitorImageMerger
                                 case SCALEMODE.STRETCHED:
                                     DrawImageStretched(fromImage, image, new Rectangle(0, 0, monitorBitmap.Width, monitorBitmap.Height));
                                     break;
+                                case SCALEMODE.OVERSCALED:
+                                    DrawImageOverScaled(fromImage, image, new Rectangle(0, 0, monitorBitmap.Width, monitorBitmap.Height));
+                                    break;
+                                case SCALEMODE.OVERSCALEDANDCENTERED:
+                                    DrawImageOverScaledAndCentered(fromImage, image, new Rectangle(0, 0, monitorBitmap.Width, monitorBitmap.Height));
+                                    break;
                             }
                             
                         }
-
-                        Rectangle rectangle;
-
 
                         //Can't draw into negative on bitmap -> move everything thats negative to 0 and everything else by that movement
                         var left = monitorDimensions.Left + addToCompLeft;
                         var top = monitorDimensions.Top + addToCompTop;
 
-                        rectangle = new Rectangle(left, top, monitorDimensions.Width, monitorDimensions.Height);
+                        Rectangle rectangle = new Rectangle(left, top, monitorDimensions.Width, monitorDimensions.Height);
 
                         virtualScreenGraphic.DrawImage(monitorBitmap, rectangle);
                         virtualScreenGraphic.Save();
                     }
 
-
                     virtualScreenBitmap.Save(finalImageFullPath, ImageFormat.Png);
-
                 }
             }
 
             return this.finalImageFullPath;
-            
         }
 
         public void setWallpaperFromFile(string filename)
@@ -115,6 +115,16 @@ namespace MutliMonitorImageMerger
             key.SetValue(@"WallpaperStyle", 0.ToString());
             key.SetValue(@"TileWallpaper", 1.ToString());
             SystemParametersInfo(SetDeskWallpaper, 0, filename, UpdateIniFile | SendWinIniChange);
+        }
+
+        private void DrawImageOverScaledAndCentered(Graphics g, Image img, Rectangle monitorRec)
+        {
+            throw (new NotImplementedException());
+        }
+
+        private void DrawImageOverScaled(Graphics g, Image img, Rectangle monitorRec)
+        {
+            g.DrawImageUnscaledAndClipped(img, monitorRec);
         }
 
 
@@ -136,22 +146,22 @@ namespace MutliMonitorImageMerger
             {
                 height = img.Height;
                 width = img.Width;
-                x = (int)((float)(monitorRect.Width - width) / 2f);
-                y = (int)((float)(monitorRect.Height - height) / 2f);
+                x = (int)((monitorRect.Width - width) / 2f);
+                y = (int)((monitorRect.Height - height) / 2f);
             }
             else
             {
                 if (heightRatio < widthRatio)
                 {
-                    width = (int)((float)img.Width * heightRatio);
-                    height = (int)((float)img.Height * heightRatio);
-                    x = (int)((float)(monitorRect.Width - width) / 2f);
+                    width = (int)(img.Width * heightRatio);
+                    height = (int)(img.Height * heightRatio);
+                    x = (int)((monitorRect.Width - width) / 2f);
                 }
                 else
                 {
-                    width = (int)((float)img.Width * widthRatio);
-                    height = (int)((float)img.Height * widthRatio);
-                    y = (int)((float)(monitorRect.Height - height) / 2f);
+                    width = (int)(img.Width * widthRatio);
+                    height = (int)(img.Height * widthRatio);
+                    y = (int)((monitorRect.Height - height) / 2f);
                 }
             }
 
